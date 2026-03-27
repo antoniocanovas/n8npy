@@ -1,0 +1,13 @@
+FROM n8nio/runners:latest
+USER root
+RUN cat /etc/task-runners.json | python3 -c "
+import json, sys
+config = json.load(sys.stdin)
+for runner in config.get('runners', []):
+    if runner.get('runnerType') == 'python':
+        if 'allowedModules' not in runner:
+            runner['allowedModules'] = {}
+        runner['allowedModules']['stdlib'] = ['*']
+        runner['allowedModules']['external'] = ['*']
+print(json.dumps(config, indent=2))
+" > /tmp/task-runners.json && mv /tmp/task-runners.json /etc/task-runners.json
