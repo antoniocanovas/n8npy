@@ -1,0 +1,14 @@
+services:
+  n8n:
+    build: .
+    restart: always
+    ports:
+      - "5678:5678"
+    environment:
+      - N8N_ENCRYPTION_KEY=tu_clave_segura_aqui_123
+      - NODE_FUNCTION_ALLOW_EXTERNAL=*
+    volumes:
+      - n8n_data:/home/node/.n8n
+
+volumes:
+  n8n_data:
